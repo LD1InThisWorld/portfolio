@@ -59,24 +59,24 @@ async function loadModrinth() {
 }
 
 async function loadGitHub() {
-  const CACHE_KEY = 'gh_repo_cache';
-  const CACHE_TTL = 5 * 60 * 1000;
+const CACHE_KEY = 'gh_repo_cache';
+const CACHE_TTL = 5 * 60 * 1000;
 
   try {
     const cached = localStorage.getItem(CACHE_KEY);
     if (cached) {
       const { ts, data } = JSON.parse(cached);
-      if (Date.now() - ts < CACHE_TTL) return data;
+      if (Date.now() - ts < CACHE_TTL && Array.isArray(data)) return data;
     }
   } catch {}
 
   try {
-    const res = await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=updated&per_page=1`);
+    const res = await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=updated&per_page=3`);
     if (!res.ok) throw new Error('api_error');
     const repos = await res.json();
     if (!Array.isArray(repos) || !repos.length) throw new Error('empty');
-    const r = repos[0];
-    const card = makeCard({
+
+    const cards = repos.map(r => makeCard({
       href: r.html_url,
       platform: 'github',
       platformLabel: '<svg width="14" height="14"><use href="#icon-github"/></svg> GitHub',
@@ -89,12 +89,13 @@ async function loadGitHub() {
         `🍴 ${fmt(r.forks_count)} форков`
       ],
       tags: r.language ? [r.language] : []
-    });
-    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: card })); } catch {}
-    return card;
+    }));
+
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: cards })); } catch {}
+    return cards;
   } catch (e) {
-    if (e.message === 'empty') return null;
-    return makeCard({
+    if (e.message === 'empty') return [];
+    return [makeCard({
       href: `https://github.com/${GITHUB_USER}`,
       platform: 'github',
       platformLabel: '<svg width="14" height="14"><use href="#icon-github"/></svg> GitHub',
@@ -104,16 +105,16 @@ async function loadGitHub() {
       desc: 'GitHub API временно недоступен — нажми чтобы открыть профиль.',
       stats: [],
       tags: []
-    });
+    })];
   }
 }
 
 async function initProjects() {
   const grid = document.getElementById('projects-grid');
-  const [modrinth, github] = await Promise.all([loadModrinth(), loadGitHub()]);
+  const [modrinth, githubCards] = await Promise.all([loadModrinth(), loadGitHub()]);
   const cards = [];
   if (modrinth) cards.push(modrinth);
-  if (github)   cards.push(github);
+  cards.push(...githubCards);
   grid.innerHTML = cards.length
     ? cards.join('')
     : `<div class="no-projects">Проектов пока нет — следи за обновлениями 👀</div>`;
