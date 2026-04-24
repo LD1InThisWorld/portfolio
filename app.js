@@ -49,10 +49,9 @@ async function loadModrinth() {
       banner: p.icon_url || null,
       name: p.title,
       desc: p.description,
-      stats: [
-        `⬇️ ${fmt(p.downloads || 0)} скачиваний`,
-        `❤️ ${fmt(p.followers || 0)} подписчиков`
-      ],
+      stats: currentLang === 'en'
+        ? [`⬇️ ${fmt(p.downloads || 0)} downloads`, `❤️ ${fmt(p.followers || 0)} followers`]
+        : [`⬇️ ${fmt(p.downloads || 0)} скачиваний`, `❤️ ${fmt(p.followers || 0)} подписчиков`],
       tags: (p.categories || []).slice(0, 3)
     });
   } catch { return null; }
@@ -83,11 +82,10 @@ const CACHE_TTL = 5 * 60 * 1000;
       icon: '<svg width="40" height="40" style="color:#e8e8f0"><use href="#icon-github"/></svg>',
       banner: null,
       name: r.name,
-      desc: r.description || 'Нет описания',
-      stats: [
-        `⭐ ${fmt(r.stargazers_count)} звёзд`,
-        `🍴 ${fmt(r.forks_count)} форков`
-      ],
+      desc: r.description || (currentLang === 'en' ? 'No description' : 'Нет описания'),
+      stats: currentLang === 'en'
+        ? [`⭐ ${fmt(r.stargazers_count)} stars`, `🍴 ${fmt(r.forks_count)} forks`]
+        : [`⭐ ${fmt(r.stargazers_count)} звёзд`, `🍴 ${fmt(r.forks_count)} форков`],
       tags: r.language ? [r.language] : []
     }));
 
@@ -181,6 +179,10 @@ function applyLang(lang) {
   if (statusEl && statusEl.dataset.statusRu) {
     statusEl.textContent = lang === 'en' ? statusEl.dataset.statusEn : statusEl.dataset.statusRu;
   }
+  // сбросить кэш GitHub и перезагрузить карточки
+  try { localStorage.removeItem(CACHE_KEY); } catch {}
+  initProjects();
+  loadDiscordWidget();
 }
 
 document.querySelectorAll('.lang-btn').forEach(btn => {
