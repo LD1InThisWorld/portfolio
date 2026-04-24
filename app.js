@@ -102,7 +102,7 @@ const CACHE_TTL = 5 * 60 * 1000;
       icon: '<svg width="40" height="40" style="color:#e8e8f0"><use href="#icon-github"/></svg>',
       banner: `https://avatars.githubusercontent.com/${GITHUB_USER}`,
       name: GITHUB_USER,
-      desc: 'GitHub API временно недоступен — нажми чтобы открыть профиль.',
+      desc: currentLang === 'en' ? 'GitHub API temporarily unavailable — click to open profile.' : 'GitHub API временно недоступен — нажми чтобы открыть профиль.',
       stats: [],
       tags: []
     })];
@@ -254,14 +254,15 @@ async function loadDiscordWidget() {
     if (!res.ok) throw new Error();
     const data = await res.json();
 
-    const iconUrl = `https://cdn.discordapp.com/icons/${GUILD_ID}/${data.icon}.png?size=128`;
-    const channels = data.channels || [];
     const members = data.members || [];
     const onlineCount = data.presence_count || 0;
 
-    const channelsHtml = channels.slice(0, 3).map(ch => 
-      `<div class="dw-channel">${ch.name}</div>`
-    ).join('');
+    const onlineText = currentLang === 'en'
+      ? `${onlineCount} ${onlineCount === 1 ? 'member' : 'members'} online`
+      : `${onlineCount} ${onlineCount === 1 ? 'участник' : 'участников'} онлайн`;
+    const membersTitle = currentLang === 'en' ? `ONLINE MEMBERS — ${members.length}` : `УЧАСТНИКИ ОНЛАЙН — ${members.length}`;
+    const joinText = currentLang === 'en' ? 'Join the server' : 'Присоединиться к серверу';
+    const noMembers = currentLang === 'en' ? 'No members online' : 'Нет участников онлайн';
 
     const membersHtml = members.slice(0, 5).map(m => {
       const statusColor = m.status === 'online' ? '#1bd96a' : m.status === 'idle' ? '#f0b232' : m.status === 'dnd' ? '#f04747' : '#747f8d';
@@ -282,28 +283,29 @@ async function loadDiscordWidget() {
         </div>
         <div>
           <div class="dw-name">${data.name}</div>
-          <div class="dw-online">${onlineCount} ${onlineCount === 1 ? 'участник' : 'участников'} онлайн</div>
+          <div class="dw-online">${onlineText}</div>
         </div>
       </div>
       <div class="dw-body">
         ${members.length ? `
-          <div class="dw-section">Участники онлайн — ${members.length}</div>
+          <div class="dw-section">${membersTitle}</div>
           <div class="dw-members">${membersHtml}</div>
-        ` : '<div style="text-align:center;color:#72767d;padding:20px 0;font-size:0.85rem;">Нет участников онлайн</div>'}
-        <a href="${data.instant_invite}" target="_blank" class="dw-join">Присоединиться к серверу</a>
+        ` : `<div style="text-align:center;color:#72767d;padding:20px 0;font-size:0.85rem;">${noMembers}</div>`}
+        <a href="${data.instant_invite}" target="_blank" class="dw-join">${joinText}</a>
       </div>
     `;
   } catch {
+    const joinText = currentLang === 'en' ? 'Join the server' : 'Присоединиться к серверу';
     widget.innerHTML = `
       <div class="dw-header">
         <div class="dw-icon">💬</div>
         <div>
-          <div class="dw-name">Discord сервер</div>
-          <div class="dw-online">Виджет недоступен</div>
+          <div class="dw-name">Discord</div>
+          <div class="dw-online">—</div>
         </div>
       </div>
       <div class="dw-body">
-        <a href="https://discord.gg/p4UxR25yAy" target="_blank" class="dw-join">Присоединиться к серверу</a>
+        <a href="https://discord.gg/p4UxR25yAy" target="_blank" class="dw-join">${joinText}</a>
       </div>
     `;
   }
