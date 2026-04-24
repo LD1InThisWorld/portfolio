@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LD — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- SVG sprite -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="icon-github" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+  </symbol>
+  <symbol id="icon-modrinth" viewBox="0 0 512 514">
+    <path fill="currentColor" d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256 256-114.6 256-256S397.4 0 256 0zm0 48c114.9 0 208 93.1 208 208S370.9 464 256 464 48 370.9 48 256 141.1 48 256 48zm0 32c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176S353.2 80 256 80zm0 48c70.7 0 128 57.3 128 128s-57.3 128-128 128-128-57.3-128-128 57.3-128 128-128zm-48 64v128l112-64-112-64z"/>
+  </symbol>
+  <symbol id="icon-discord" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+  </symbol>
+</svg>
+
+<div class="container">
+  <nav>
+    <div class="logo">LD</div>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#about"   data-i18n="nav.about">Обо мне</a></li>
+        <li><a href="#links"   data-i18n="nav.links">Ссылки</a></li>
+        <li><a href="#mods"    data-i18n="nav.projects">Проекты</a></li>
+        <li><a href="#discord" data-i18n="nav.discord">Discord</a></li>
+      </ul>
+      <div class="lang-switch">
+        <button class="lang-btn active" data-lang="ru">RU</button>
+        <button class="lang-btn"        data-lang="en">EN</button>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<!-- HERO -->
+<div class="container">
+  <section class="hero fade-in" id="about">
+    <div class="hero-text">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        <span data-i18n="hero.online">Онлайн</span>
+      </div>
+      <h1>Привет, я <span class="highlight">LD</span></h1>
+      <p class="hero-desc" data-i18n="hero.desc">
+        Разработчик модов и проектов. Нахожусь на Modrinth и GitHub — там можно найти мои работы и следить за обновлениями.
+      </p>
+      <div class="hero-buttons">
+        <a href="https://modrinth.com/user/LD1InThisWorld" target="_blank" class="btn btn-modrinth">
+          <img src="https://cdn.modrinth.com/modrinth-new.png" alt="" style="width:18px;height:18px;object-fit:contain;border-radius:3px"> Modrinth
+        </a>
+        <a href="https://github.com/LD1InThisWorld" target="_blank" class="btn btn-outline">
+          <svg><use href="#icon-github"/></svg> GitHub
+        </a>
+        <a href="https://ld1inthisworld.itch.io/" target="_blank" class="btn btn-itch">
+          <img src="https://static.itch.io/images/itchio-textless-black.svg" alt="" style="width:18px;height:18px;object-fit:contain;filter:invert(1) sepia(1) saturate(3) hue-rotate(300deg)"> itch.io
+        </a>
+        <a href="https://gamejolt.com/@LD1InThisWorld" target="_blank" class="btn btn-gamejolt">
+          <img src="https://s.gjcdn.net/assets/Ds1CfUWM.png" alt="" style="width:18px;height:18px;object-fit:contain"> GameJolt
+        </a>
+        <a href="#discord" class="btn btn-discord">
+          <svg><use href="#icon-discord"/></svg> Discord
+        </a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- LINKS -->
+<div class="container">
+  <section class="section fade-in" id="links">
+    <div class="section-title">
+      <span data-i18n="links.title">Мои профили</span>
+    </div>
+    <div class="cards">
+
+      <a href="https://github.com/LD1InThisWorld" target="_blank" class="card">
+        <div class="card-icon github"><svg><use href="#icon-github"/></svg></div>
+        <h3>GitHub</h3>
+        <p data-i18n="links.github">Исходный код проектов, репозитории и открытые контрибуции.</p>
+        <div class="card-link">github.com/LD1InThisWorld →</div>
+      </a>
+
+      <a href="https://modrinth.com/user/LD1InThisWorld" target="_blank" class="card">
+        <div class="card-icon modrinth">
+          <img src="https://cdn.modrinth.com/modrinth-new.png" alt="Modrinth" style="width:26px;height:26px;object-fit:contain;border-radius:4px">
+        </div>
+        <h3>Modrinth</h3>
+        <p data-i18n="links.modrinth">Моды и проекты для Minecraft — всё опубликовано здесь.</p>
+        <div class="card-link">modrinth.com/user/LD1InThisWorld →</div>
+      </a>
+
+      <a href="https://ld1inthisworld.itch.io/" target="_blank" class="card">
+        <div class="card-icon itch">
+          <img src="https://static.itch.io/images/itchio-textless-black.svg" alt="itch.io" style="width:26px;height:26px;object-fit:contain;filter:invert(1) sepia(1) saturate(5) hue-rotate(320deg)">
+        </div>
+        <h3>itch.io</h3>
+        <p data-i18n="links.itch">Игры и проекты на itch.io — инди-платформа для разработчиков.</p>
+        <div class="card-link">ld1inthisworld.itch.io →</div>
+      </a>
+
+      <a href="https://gamejolt.com/@LD1InThisWorld" target="_blank" class="card">
+        <div class="card-icon gamejolt">
+          <img src="https://s.gjcdn.net/assets/Ds1CfUWM.png" alt="GameJolt" style="width:26px;height:26px;object-fit:contain">
+        </div>
+        <h3>GameJolt</h3>
+        <p data-i18n="links.gamejolt">Профиль на GameJolt — игры и сообщество разработчиков.</p>
+        <div class="card-link">gamejolt.com/@LD1InThisWorld →</div>
+      </a>
+
+      <div class="card" style="cursor:default;">
+        <div class="card-icon discord"><svg><use href="#icon-discord"/></svg></div>
+        <h3>Discord Server</h3>
+        <p data-i18n="links.discord">Присоединяйся к серверу — общение, обновления и поддержка.</p>
+        <div class="card-link" style="color:var(--accent2);" data-i18n="links.discordSub">Виджет ниже ↓</div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- PROJECTS -->
+<div class="container">
+  <section class="section fade-in" id="mods">
+    <div class="section-title">
+      <span data-i18n="proj.title">Проекты</span>
+    </div>
+    <div class="projects-grid" id="projects-grid">
+      <div class="proj-card skeleton-card skeleton"></div>
+      <div class="proj-card skeleton-card skeleton"></div>
+    </div>
+  </section>
+</div>
+
+<!-- DISCORD -->
+<div class="container">
+  <section class="discord-section fade-in" id="discord">
+    <div class="discord-layout">
+      <div class="discord-info">
+        <h2 data-i18n="discord.title">Discord сервер</h2>
+        <p data-i18n="discord.desc">Заходи на сервер, чтобы быть в курсе новых проектов, задавать вопросы и общаться с сообществом.</p>
+        <a href="https://discord.gg/p4UxR25yAy" target="_blank" class="btn btn-discord">
+          <svg><use href="#icon-discord"/></svg>
+          <span data-i18n="discord.btn">Вступить в сервер</span>
+        </a>
+      </div>
+      <div class="discord-widget" id="discord-widget">
+        <div class="dw-loading">
+          <div class="skeleton" style="height:100%;border-radius:16px"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="container">
+  <footer>
+    <p>© 2026 LD — <span data-i18n="footer">сделано с душой</span></p>
+  </footer>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
