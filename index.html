@@ -163,8 +163,12 @@
 
 <div class="container">
   <footer>
-    <p>© 2026 LD — <span data-i18n="footer">сделано с душой</span></p>
+    <p>© 2026 LD — <span data-i18n="footer">сделано с душой</span> · <button onclick="document.getElementById('timur-overlay').style.display='flex'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.85rem;font-family:inherit;padding:0;transition:color 0.2s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">timur</button></p>
   </footer>
+
+  <div id="timur-overlay" onclick="this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;align-items:center;justify-content:center;cursor:pointer">
+    <img src="https://i.imgur.com/LjEJZXc.png" alt="timur" style="max-width:90vw;max-height:90vh;object-fit:contain;border-radius:12px">
+  </div>
 </div>
 
 <script src="app.js"></script>
