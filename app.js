@@ -178,12 +178,12 @@ function applyLang(lang) {
   if (sw) sw.classList.toggle('en', lang === 'en');
   const h1 = document.querySelector('h1');
   if (h1) h1.innerHTML = `${i18n[lang]['hero.greeting']} <span class="highlight">LD</span>`;
-  // обновить текст статуса если он уже загружен из Lanyard
+
   const statusEl = document.querySelector('.hero-badge [data-i18n="hero.online"]');
   if (statusEl && statusEl.dataset.statusRu) {
     statusEl.textContent = lang === 'en' ? statusEl.dataset.statusEn : statusEl.dataset.statusRu;
   }
-  // сбросить кэш GitHub и перезагрузить карточки
+
   try { localStorage.removeItem(CACHE_KEY); } catch {}
   initProjects();
   loadDiscordWidget();
@@ -195,7 +195,7 @@ document.querySelectorAll('.lang-btn').forEach(btn => {
 
 applyLang(currentLang);
 
-// fade-in on scroll
+
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
@@ -204,8 +204,7 @@ const observer = new IntersectionObserver(entries => {
 
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-// Discord status via Lanyard
-// Вступи в сервер https://discord.gg/lanyard чтобы это работало
+
 const DISCORD_USER_ID = '1405558726907133963';
 
 const STATUS_COLORS = {
@@ -233,7 +232,7 @@ async function updateDiscordStatus() {
     text.dataset.statusRu = info.label.ru;
     text.dataset.statusEn = info.label.en;
 
-    // меняем цвет всего badge
+  
     const badge = document.querySelector('.hero-badge');
     if (badge) {
       badge.style.background  = `${info.color}14`;
@@ -241,7 +240,7 @@ async function updateDiscordStatus() {
       badge.style.color       = info.color;
     }
   } catch {
-    // если Lanyard недоступен — оставляем дефолт
+    
   }
 }
 
@@ -321,7 +320,7 @@ loadDiscordWidget();
 
 initProjects();
 
-// Game of Life на боковых панелях
+// Game of Life
 let golEnabled = localStorage.getItem('gol') !== 'off';
 
 function toggleGol() {
@@ -362,7 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let w = resize();
-    if (w < CELL * 2) return; // слишком узко
+    if (w < CELL * 2) return; 
 
     const ctx = canvas.getContext('2d');
     let cols = Math.floor(canvas.width / CELL);
@@ -461,8 +460,11 @@ function showToast(msg) {
 
 function copyDiscordNick() {
   navigator.clipboard.writeText('ld1inthisworld').then(() => {
-    showToast('💬 <strong>ld1inthisworld</strong> скопирован!');
+    const msg = currentLang === 'en'
+      ? ' <strong>ld1inthisworld</strong> copied!'
+      : ' <strong>ld1inthisworld</strong> скопирован!';
+    showToast(msg);
   }).catch(() => {
-    showToast('❌ Не удалось скопировать');
+    showToast(currentLang === 'en' ? '❌ Failed to copy' : '❌ Не удалось скопировать');
   });
 }
