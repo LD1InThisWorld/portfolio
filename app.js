@@ -9,7 +9,7 @@ function fmt(n) {
 
 function makeCard({ href, platform, platformLabel, icon, banner, name, desc, stats, tags }) {
   const bannerHtml = banner
-    ? `<div class="proj-banner"><img src="${banner}" alt="${name}" loading="lazy" onerror="this.parentElement.innerHTML='${icon}'"></div>`
+    ? `<div class="proj-banner"><img src="${banner}" alt="${name}" loading="lazy"></div>`
     : `<div class="proj-banner">${icon}</div>`;
 
   const statsHtml = stats.length
@@ -44,9 +44,9 @@ async function loadModrinth() {
     return makeCard({
       href: `https://modrinth.com/${p.project_type}/${p.slug}`,
       platform: 'modrinth',
-      platformLabel: '<svg width="14" height="14"><use href="#icon-modrinth"/></svg> Modrinth',
-      icon: '<svg width="40" height="40" style="color:#1bd96a"><use href="#icon-modrinth"/></svg>',
-      banner: p.icon_url || null,
+      platformLabel: '<img src="https://cdn.modrinth.com/modrinth-new.png" width="14" height="14" style="border-radius:3px;vertical-align:middle"> Modrinth',
+      icon: '<img src="https://cdn.modrinth.com/modrinth-new.png" width="56" height="56" style="border-radius:10px;object-fit:contain">',
+      banner: (p.featured_gallery) || (p.gallery && p.gallery.find(g => g.featured)?.url) || (p.gallery && p.gallery[0]?.url) || null,
       name: p.title,
       desc: p.description,
       stats: currentLang === 'en'

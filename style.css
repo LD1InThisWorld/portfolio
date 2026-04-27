@@ -429,7 +429,7 @@ h1 .highlight {
   font-size: 3rem; flex-shrink: 0;
   overflow: hidden;
 }
-.proj-banner img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
+.proj-banner img { width: 100%; height: 100%; object-fit: cover; }
 .proj-banner svg { width: 56px; height: 56px; opacity: 0.5; display: block; }
 .proj-banner > img[src=""] { display: none; }
 
