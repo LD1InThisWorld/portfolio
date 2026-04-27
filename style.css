@@ -466,7 +466,55 @@ h1 .highlight {
 
 .no-projects { text-align: center; padding: 48px; color: var(--muted); font-size: 0.9rem; }
 
-/* FOOTER */
+.proj-footer {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+.discord-nick {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(88,101,242,0.08);
+  border: 1px solid rgba(88,101,242,0.25);
+  border-radius: 10px;
+  padding: 8px 14px;
+  color: #5865f2;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: all 0.2s;
+  user-select: none;
+}
+.discord-nick:hover { background: rgba(88,101,242,0.15); border-color: #5865f2; transform: translateY(-1px); }
+.nick-copy-hint { font-size: 0.8rem; opacity: 0.6; }
+
+.toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #23272a;
+  border: 1px solid rgba(88,101,242,0.4);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  z-index: 9998;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 footer {
   border-top: 1px solid var(--border);
   padding: 32px 0;

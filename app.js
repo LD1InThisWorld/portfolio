@@ -133,6 +133,8 @@ const i18n = {
     'links.discord': 'Присоединяйся к серверу — общение, вопросы и поддержка.',
     'links.discordSub': 'Виджет ниже ↓',
     'proj.title': 'Проекты', 'proj.sub': '/ live from APIs',
+    'proj.allGithub': 'Все репозитории на GitHub',
+    'proj.allModrinth': 'Все проекты на Modrinth',
     'discord.title': 'Discord сервер',
     'discord.desc': 'Заходи на сервер, чтобы быть в курсе новых проектов, задавать вопросы и общаться с сообществом.',
     'discord.btn': 'Вступить в сервер',
@@ -151,6 +153,8 @@ const i18n = {
     'links.discord': 'Join the server — chat, questions and support.',
     'links.discordSub': 'Widget below ↓',
     'proj.title': 'Projects', 'proj.sub': '/ live from APIs',
+    'proj.allGithub': 'All repos on GitHub',
+    'proj.allModrinth': 'All projects on Modrinth',
     'discord.title': 'Discord server',
     'discord.desc': 'Join the server to stay up to date with new projects, ask questions and chat with the community.',
     'discord.btn': 'Join server',
@@ -446,3 +450,19 @@ document.addEventListener('DOMContentLoaded', () => {
   initGol('gol-left',  'left');
   initGol('gol-right', 'right');
 })();
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerHTML = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function copyDiscordNick() {
+  navigator.clipboard.writeText('ld1inthisworld').then(() => {
+    showToast('💬 <strong>ld1inthisworld</strong> скопирован!');
+  }).catch(() => {
+    showToast('❌ Не удалось скопировать');
+  });
+}
