@@ -158,7 +158,7 @@ const i18n = {
   }
 };
 
-let currentLang = localStorage.getItem('lang') || 'ru';
+let currentLang = localStorage.getItem('lang') || 'en';
 
 function applyLang(lang) {
   currentLang = lang;
@@ -318,6 +318,29 @@ loadDiscordWidget();
 initProjects();
 
 // Game of Life на боковых панелях
+let golEnabled = localStorage.getItem('gol') !== 'off';
+
+function toggleGol() {
+  golEnabled = !golEnabled;
+  localStorage.setItem('gol', golEnabled ? 'on' : 'off');
+  const btn   = document.getElementById('gol-toggle');
+  const left  = document.getElementById('gol-left');
+  const right = document.getElementById('gol-right');
+  left.style.opacity  = golEnabled ? '0.07' : '0';
+  right.style.opacity = golEnabled ? '0.07' : '0';
+  if (btn) btn.classList.toggle('active', golEnabled);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('gol-toggle');
+  const left  = document.getElementById('gol-left');
+  const right = document.getElementById('gol-right');
+  if (!golEnabled) {
+    if (left)  left.style.opacity  = '0';
+    if (right) right.style.opacity = '0';
+  }
+  if (btn) btn.classList.toggle('active', golEnabled);
+});
 (function() {
   const CELL = 8;
   const COLOR = '#7c6af7';

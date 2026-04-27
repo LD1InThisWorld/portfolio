@@ -37,9 +37,12 @@
         <li><a href="#discord" data-i18n="nav.discord">Discord</a></li>
       </ul>
       <div class="lang-switch">
-        <button class="lang-btn active" data-lang="ru">RU</button>
-        <button class="lang-btn"        data-lang="en">EN</button>
+        <button class="lang-btn"        data-lang="ru">RU</button>
+        <button class="lang-btn active" data-lang="en">EN</button>
       </div>
+      <button id="gol-toggle" onclick="toggleGol()" class="gol-btn" title="Game of Life">
+        <span class="gol-icon">⠿</span>
+      </button>
     </div>
   </nav>
 </div>
@@ -67,7 +70,7 @@
           <img src="https://static.itch.io/images/itchio-textless-black.svg" alt="" style="width:18px;height:18px;object-fit:contain;filter:invert(1) sepia(1) saturate(3) hue-rotate(300deg)"> itch.io
         </a>
         <a href="https://gamejolt.com/@LD1InThisWorld" target="_blank" class="btn btn-gamejolt">
-          <img src="https://s.gjcdn.net/assets/Ds1CfUWM.png" alt="" style="width:18px;height:18px;object-fit:contain"> GameJolt
+          <img src="gamejolt-logo.png" alt="" style="width:18px;height:18px;object-fit:contain"> GameJolt
         </a>
         <a href="https://modrinth.com/user/LD1InThisWorld" target="_blank" class="btn btn-modrinth">
           <img src="https://cdn.modrinth.com/modrinth-new.png" alt="" style="width:18px;height:18px;object-fit:contain;border-radius:3px"> Modrinth
@@ -110,7 +113,7 @@
 
       <a href="https://gamejolt.com/@LD1InThisWorld" target="_blank" class="card">
         <div class="card-icon gamejolt">
-          <img src="https://s.gjcdn.net/assets/Ds1CfUWM.png" alt="GameJolt" style="width:26px;height:26px;object-fit:contain">
+          <img src="gamejolt-logo.png" alt="GameJolt" style="width:26px;height:26px;object-fit:contain">
         </div>
         <h3>GameJolt</h3>
         <p data-i18n="links.gamejolt">Профиль на GameJolt — игры и сообщество разработчиков.</p>

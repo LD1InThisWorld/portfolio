@@ -124,7 +124,31 @@ nav {
 .lang-btn:hover { color: var(--text); }
 .lang-btn.active { color: #fff; }
 
-/* HERO */
+.gol-btn {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.gol-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(124,106,247,0.08); }
+.gol-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(124,106,247,0.12); }
+.gol-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: 3px; right: 3px;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 4px var(--accent);
+}
 .hero { padding: 90px 0 70px; display: flex; align-items: center; gap: 60px; }
 .hero-text { flex: 1; }
 
@@ -186,14 +210,14 @@ h1 .highlight {
 .btn-discord  { background: rgba(88,101,242,0.08);  color: #5865f2;        border: 1px solid rgba(88,101,242,0.3); }
 .btn-modrinth { background: rgba(27,217,106,0.08);  color: #1bd96a;        border: 1px solid rgba(27,217,106,0.3); }
 .btn-itch     { background: rgba(250,92,92,0.08);   color: #fa5c5c;        border: 1px solid rgba(250,92,92,0.3); }
-.btn-gamejolt { background: rgba(45,186,78,0.08);   color: #2dba4e;        border: 1px solid rgba(45,186,78,0.3); }
+.btn-gamejolt { background: rgba(45,186,78,0.08); color: #2dba4e; border: 1px solid rgba(45,186,78,0.3); }
 
 .btn-primary:hover  { background: rgba(124,106,247,0.15); border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(124,106,247,0.2); }
 .btn-outline:hover  { border-color: var(--accent); color: var(--accent); background: rgba(124,106,247,0.08); transform: translateY(-2px); }
 .btn-discord:hover  { background: rgba(88,101,242,0.15);  border-color: #5865f2; transform: translateY(-2px); box-shadow: 0 6px 24px rgba(88,101,242,0.2); }
 .btn-modrinth:hover { background: rgba(27,217,106,0.15);  border-color: #1bd96a; transform: translateY(-2px); box-shadow: 0 6px 24px rgba(27,217,106,0.2); }
 .btn-itch:hover     { background: rgba(250,92,92,0.15);   border-color: #fa5c5c; transform: translateY(-2px); box-shadow: 0 6px 24px rgba(250,92,92,0.2); }
-.btn-gamejolt:hover { background: rgba(45,186,78,0.15);   border-color: #2dba4e; transform: translateY(-2px); box-shadow: 0 6px 24px rgba(45,186,78,0.2); }
+.btn-gamejolt:hover { background: rgba(45,186,78,0.15); border-color: #2dba4e; transform: translateY(-2px); box-shadow: 0 6px 24px rgba(45,186,78,0.2); }
 
 /* SECTIONS */
 .section { padding: 60px 0; }
@@ -240,7 +264,8 @@ h1 .highlight {
 .card-icon.modrinth{ background: rgba(27,217,106,0.1);  color: #1bd96a; }
 .card-icon.discord { background: rgba(88,101,242,0.15); color: #5865f2; }
 .card-icon.itch    { background: rgba(250,92,92,0.12);  color: #fa5c5c; }
-.card-icon.gamejolt{ background: rgba(45,186,78,0.1);   color: #2dba4e; }
+.card-icon.gamejolt{ background: rgb(42, 39, 49); border-radius: 12px; }
+
 
 .card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
 .card p  { color: var(--muted); font-size: 0.875rem; line-height: 1.6; }
