@@ -316,3 +316,110 @@ async function loadDiscordWidget() {
 loadDiscordWidget();
 
 initProjects();
+
+// Game of Life на боковых панелях
+(function() {
+  const CELL = 8;
+  const COLOR = '#7c6af7';
+
+  function initGol(canvasId, side) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+
+    function resize() {
+      const contentWidth = Math.min(1100, window.innerWidth) + 48;
+      const sideWidth = Math.max(0, Math.floor((window.innerWidth - contentWidth) / 2));
+      canvas.width  = sideWidth;
+      canvas.height = window.innerHeight;
+      return sideWidth;
+    }
+
+    let w = resize();
+    if (w < CELL * 2) return; // слишком узко
+
+    const ctx = canvas.getContext('2d');
+    let cols = Math.floor(canvas.width / CELL);
+    let rows = Math.floor(canvas.height / CELL);
+
+    function makeGrid() {
+      return Array.from({ length: rows }, () =>
+        Array.from({ length: cols }, () => Math.random() < 0.3 ? 1 : 0)
+      );
+    }
+
+    let grid = makeGrid();
+
+    function next(g) {
+      return g.map((row, r) => row.map((cell, c) => {
+        let n = 0;
+        for (let dr = -1; dr <= 1; dr++)
+          for (let dc = -1; dc <= 1; dc++) {
+            if (dr === 0 && dc === 0) continue;
+            const nr = (r + dr + rows) % rows;
+            const nc = (c + dc + cols) % cols;
+            n += g[nr][nc];
+          }
+        return (cell === 1) ? (n === 2 || n === 3 ? 1 : 0) : (n === 3 ? 1 : 0);
+      }));
+    }
+
+    function draw(g) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#0a0a0f';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = COLOR;
+      g.forEach((row, r) => row.forEach((cell, c) => {
+        if (cell) ctx.fillRect(c * CELL + 1, r * CELL + 1, CELL - 2, CELL - 2);
+      }));
+    }
+
+    let frame = 0;
+    function loop() {
+      frame++;
+      if (frame % 8 === 0) { // ~7fps
+        grid = next(grid);
+        draw(grid);
+      }
+      requestAnimationFrame(loop);
+    }
+
+    let painting = false;
+
+    function getCellFromEvent(e) {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      return { c: Math.floor(x / CELL), r: Math.floor(y / CELL) };
+    }
+
+    function paint(e) {
+      const { c, r } = getCellFromEvent(e);
+      if (r >= 0 && r < rows && c >= 0 && c < cols) {
+        grid[r][c] = 1;
+        draw(grid);
+      }
+    }
+
+    canvas.addEventListener('mousedown', e => { painting = true; paint(e); });
+    canvas.addEventListener('mousemove', e => { if (painting) paint(e); });
+    canvas.addEventListener('mouseup',   () => { painting = false; });
+    canvas.addEventListener('mouseleave',() => { painting = false; });
+
+    // touch
+    canvas.addEventListener('touchstart', e => { painting = true; paint(e.touches[0]); e.preventDefault(); }, { passive: false });
+    canvas.addEventListener('touchmove',  e => { if (painting) paint(e.touches[0]); e.preventDefault(); }, { passive: false });
+    canvas.addEventListener('touchend',   () => { painting = false; });
+
+    window.addEventListener('resize', () => {
+      w = resize();
+      cols = Math.floor(canvas.width / CELL);
+      rows = Math.floor(canvas.height / CELL);
+      grid = makeGrid();
+    });
+
+    loop();
+  }
+
+  initGol('gol-left',  'left');
+  initGol('gol-right', 'right');
+})();
