@@ -1,5 +1,9 @@
 const MODRINTH_USER = 'LD1InThisWorld';
 const GITHUB_USER   = 'LD1InThisWorld';
+const CACHE_KEY = 'gh_repo_cache';
+
+// Очищаем кеш при каждом заходе, чтобы проекты всегда были актуальными
+try { localStorage.removeItem(CACHE_KEY); } catch {}
 
 function fmt(n) {
   if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
@@ -59,17 +63,8 @@ async function loadModrinth() {
   } catch { return null; }
 }
 
-async function loadGitHub() {
-const CACHE_KEY = 'gh_repo_cache';
-const CACHE_TTL = 5 * 60 * 1000;
 
-  try {
-    const cached = localStorage.getItem(CACHE_KEY);
-    if (cached) {
-      const { ts, data } = JSON.parse(cached);
-      if (Date.now() - ts < CACHE_TTL && Array.isArray(data)) return data;
-    }
-  } catch {}
+async function loadGitHub() {
 
   try {
     const res = await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=updated&per_page=3`);
@@ -91,7 +86,7 @@ const CACHE_TTL = 5 * 60 * 1000;
       tags: r.language ? [r.language] : []
     }));
 
-    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: cards })); } catch {}
+    try { /* кеш отключён — данные всегда свежие */ } catch {}
     return cards;
   } catch (e) {
     if (e.message === 'empty') return [];
