@@ -2,7 +2,6 @@ const MODRINTH_USER = 'LD1InThisWorld';
 const GITHUB_USER   = 'LD1InThisWorld';
 const CACHE_KEY = 'gh_repo_cache';
 
-// Очищаем кеш при каждом заходе, чтобы проекты всегда были актуальными
 try { localStorage.removeItem(CACHE_KEY); } catch {}
 
 function fmt(n) {
@@ -64,10 +63,10 @@ async function loadModrinth() {
 }
 
 
-async function loadGitHub() {
+async function loadGitHub(count = 3) {
 
   try {
-    const res = await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=updated&per_page=3`);
+    const res = await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=updated&per_page=${count}`);
     if (!res.ok) throw new Error('api_error');
     const repos = await res.json();
     if (!Array.isArray(repos) || !repos.length) throw new Error('empty');
@@ -86,7 +85,7 @@ async function loadGitHub() {
       tags: r.language ? [r.language] : []
     }));
 
-    try { /* кеш отключён — данные всегда свежие */ } catch {}
+    try { } catch {}
     return cards;
   } catch (e) {
     if (e.message === 'empty') return [];
@@ -106,7 +105,9 @@ async function loadGitHub() {
 
 async function initProjects() {
   const grid = document.getElementById('projects-grid');
-  const [modrinth, githubCards] = await Promise.all([loadModrinth(), loadGitHub()]);
+  const modrinth = await loadModrinth();
+  const githubCount = modrinth ? 2 : 3;
+  const githubCards = await loadGitHub(githubCount);
   const cards = [];
   if (modrinth) cards.push(modrinth);
   cards.push(...githubCards);
@@ -242,9 +243,8 @@ async function updateDiscordStatus() {
 }
 
 updateDiscordStatus();
-setInterval(updateDiscordStatus, 30000); // обновляем каждые 30 сек
+setInterval(updateDiscordStatus, 30000);
 
-// Discord Widget
 const GUILD_ID = '1497134716548284488';
 
 async function loadDiscordWidget() {
@@ -317,7 +317,6 @@ loadDiscordWidget();
 
 initProjects();
 
-// Game of Life
 let golEnabled = localStorage.getItem('gol') !== 'off';
 
 function toggleGol() {
@@ -358,7 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let w = resize();
-    if (w < CELL * 2) return; 
+    if (w < CELL * 2) return;
 
     const ctx = canvas.getContext('2d');
     let cols = Math.floor(canvas.width / CELL);
@@ -399,7 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let frame = 0;
     function loop() {
       frame++;
-      if (frame % 8 === 0) { // ~7fps
+      if (frame % 8 === 0) {
         grid = next(grid);
         draw(grid);
       }
@@ -428,7 +427,6 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.addEventListener('mouseup',   () => { painting = false; });
     canvas.addEventListener('mouseleave',() => { painting = false; });
 
-    // touch
     canvas.addEventListener('touchstart', e => { painting = true; paint(e.touches[0]); e.preventDefault(); }, { passive: false });
     canvas.addEventListener('touchmove',  e => { if (painting) paint(e.touches[0]); e.preventDefault(); }, { passive: false });
     canvas.addEventListener('touchend',   () => { painting = false; });

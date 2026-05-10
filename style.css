@@ -406,8 +406,12 @@ h1 .highlight {
 .dw-join:hover { background: rgba(88,101,242,0.2); border-color: #5865f2; }
 
 /* PROJECT CARDS */
-.projects-grid { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-.projects-grid .proj-card { width: 320px; flex-shrink: 0; }
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.projects-grid .proj-card { width: auto; }
 
 .proj-card {
   background: var(--surface);
@@ -534,4 +538,5 @@ footer {
   .discord-layout { grid-template-columns: 1fr; }
   .discord-widget, .discord-widget iframe { width: 100%; }
   .nav-links { display: none; }
+  .projects-grid { grid-template-columns: 1fr; }
 }
