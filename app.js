@@ -39,84 +39,93 @@ function makeCard({ href, platform, platformLabel, icon, banner, name, desc, sta
 async function loadModrinth() {
   try {
     const res = await fetch(`https://api.modrinth.com/v2/user/${MODRINTH_USER}/projects`);
-    if (!res.ok) return null;
+    if (!res.ok) return [];
     const projects = await res.json();
-    if (!projects.length) return null;
-    projects.sort((a, b) => (b.downloads || 0) - (a.downloads || 0));
-    const p = projects[0];
-    return makeCard({
-      href: `https://modrinth.com/${p.project_type}/${p.slug}`,
-      platform: 'modrinth',
-      platformLabel: '<img src="https://cdn.modrinth.com/modrinth-new.png" width="14" height="14" style="border-radius:3px;vertical-align:middle"> Modrinth',
-      icon: p.icon_url
-        ? `<img src="${p.icon_url}" style="width:72px;height:72px;object-fit:contain;border-radius:12px">`
-        : '<img src="https://cdn.modrinth.com/modrinth-new.png" width="56" height="56" style="border-radius:10px;object-fit:contain">',
-      banner: (p.gallery && p.gallery.find(g => g.featured)?.url) || null,
-      name: p.title,
-      desc: p.description,
-      stats: currentLang === 'en'
-        ? [`⬇️ ${fmt(p.downloads || 0)} downloads`, `❤️ ${fmt(p.followers || 0)} followers`]
-        : [`⬇️ ${fmt(p.downloads || 0)} скачиваний`, `❤️ ${fmt(p.followers || 0)} подписчиков`],
-      tags: (p.categories || []).slice(0, 3)
-    });
-  } catch { return null; }
+    if (!projects.length) return [];
+    return projects
+      .filter(p => p.status === 'approved' || p.status === 'listed' || p.status === 'unlisted' || !p.status)
+      .map(p => ({
+        date: new Date(p.updated || p.published || 0),
+        html: makeCard({
+          href: `https://modrinth.com/${p.project_type}/${p.slug}`,
+          platform: 'modrinth',
+          platformLabel: '<img src="https://cdn.modrinth.com/modrinth-new.png" width="14" height="14" style="border-radius:3px;vertical-align:middle"> Modrinth',
+          icon: p.icon_url
+            ? `<img src="${p.icon_url}" style="width:72px;height:72px;object-fit:contain;border-radius:12px">`
+            : '<img src="https://cdn.modrinth.com/modrinth-new.png" width="56" height="56" style="border-radius:10px;object-fit:contain">',
+          banner: (p.gallery && p.gallery.find(g => g.featured)?.url) || null,
+          name: p.title,
+          desc: p.description,
+          stats: currentLang === 'en'
+            ? [`⬇️ ${fmt(p.downloads || 0)} downloads`, `❤️ ${fmt(p.followers || 0)} followers`]
+            : [`⬇️ ${fmt(p.downloads || 0)} скачиваний`, `❤️ ${fmt(p.followers || 0)} подписчиков`],
+          tags: (p.categories || []).slice(0, 3)
+        })
+      }));
+  } catch { return []; }
 }
 
-
-async function loadGitHub(count = 3) {
-
+async function loadGitHub() {
   try {
-    const res = await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=updated&per_page=${count}`);
+    const res = await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=updated&per_page=10`);
     if (!res.ok) throw new Error('api_error');
     const repos = await res.json();
     if (!Array.isArray(repos) || !repos.length) throw new Error('empty');
-
-    const cards = repos.map(r => makeCard({
-      href: r.html_url,
-      platform: 'github',
-      platformLabel: '<svg width="14" height="14"><use href="#icon-github"/></svg> GitHub',
-      icon: '<svg width="40" height="40" style="color:#e8e8f0"><use href="#icon-github"/></svg>',
-      banner: null,
-      name: r.name,
-      desc: r.description || (currentLang === 'en' ? 'No description' : 'Нет описания'),
-      stats: currentLang === 'en'
-        ? [`⭐ ${fmt(r.stargazers_count)} stars`, `🍴 ${fmt(r.forks_count)} forks`]
-        : [`⭐ ${fmt(r.stargazers_count)} звёзд`, `🍴 ${fmt(r.forks_count)} форков`],
-      tags: r.language ? [r.language] : []
+    return repos.map(r => ({
+      date: new Date(r.pushed_at || r.updated_at || 0),
+      html: makeCard({
+        href: r.html_url,
+        platform: 'github',
+        platformLabel: '<svg width="14" height="14"><use href="#icon-github"/></svg> GitHub',
+        icon: '<svg width="40" height="40" style="color:#e8e8f0"><use href="#icon-github"/></svg>',
+        banner: null,
+        name: r.name,
+        desc: r.description || (currentLang === 'en' ? 'No description' : 'Нет описания'),
+        stats: currentLang === 'en'
+          ? [`⭐ ${fmt(r.stargazers_count)} stars`, `🍴 ${fmt(r.forks_count)} forks`]
+          : [`⭐ ${fmt(r.stargazers_count)} звёзд`, `🍴 ${fmt(r.forks_count)} форков`],
+        tags: r.language ? [r.language] : []
+      })
     }));
-
-    try { } catch {}
-    return cards;
   } catch (e) {
     if (e.message === 'empty') return [];
-    return [makeCard({
-      href: `https://github.com/${GITHUB_USER}`,
-      platform: 'github',
-      platformLabel: '<svg width="14" height="14"><use href="#icon-github"/></svg> GitHub',
-      icon: '<svg width="40" height="40" style="color:#e8e8f0"><use href="#icon-github"/></svg>',
-      banner: `https://avatars.githubusercontent.com/${GITHUB_USER}`,
-      name: GITHUB_USER,
-      desc: currentLang === 'en' ? 'GitHub API temporarily unavailable — click to open profile.' : 'GitHub API временно недоступен — нажми чтобы открыть профиль.',
-      stats: [],
-      tags: []
-    })];
+    return [{
+      date: new Date(0),
+      html: makeCard({
+        href: `https://github.com/${GITHUB_USER}`,
+        platform: 'github',
+        platformLabel: '<svg width="14" height="14"><use href="#icon-github"/></svg> GitHub',
+        icon: '<svg width="40" height="40" style="color:#e8e8f0"><use href="#icon-github"/></svg>',
+        banner: `https://avatars.githubusercontent.com/${GITHUB_USER}`,
+        name: GITHUB_USER,
+        desc: currentLang === 'en' ? 'GitHub API temporarily unavailable — click to open profile.' : 'GitHub API временно недоступен — нажми чтобы открыть профиль.',
+        stats: [],
+        tags: []
+      })
+    }];
   }
 }
 
 async function initProjects() {
   const grid = document.getElementById('projects-grid');
-  const modrinth = await loadModrinth();
-  const githubCount = modrinth ? 2 : 3;
-  const githubCards = await loadGitHub(githubCount);
-  const cards = [];
-  if (modrinth) cards.push(modrinth);
-  cards.push(...githubCards);
-  grid.innerHTML = cards.length
-    ? cards.join('')
-    : `<div class="no-projects">Проектов пока нет — следи за обновлениями 👀</div>`;
+  const [modrinthItems, githubItems] = await Promise.all([loadModrinth(), loadGitHub()]);
+
+  const all = [...modrinthItems, ...githubItems]
+    .sort((a, b) => b.date - a.date)
+    .slice(0, 3);
+
+  if (!all.length) {
+    grid.innerHTML = `<div class="no-projects">Проектов пока нет — следи за обновлениями 👀</div>`;
+    return;
+  }
+
+  const ordered = all.length === 3
+    ? [all[1], all[0], all[2]]
+    : all;
+
+  grid.innerHTML = ordered.map(item => item.html).join('');
 }
 
-// i18n
 const i18n = {
   ru: {
     'nav.about': 'Обо мне', 'nav.links': 'Ссылки', 'nav.projects': 'Проекты', 'nav.discord': 'Discord',
