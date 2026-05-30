@@ -45,8 +45,10 @@ async function loadModrinth() {
       href: `https://modrinth.com/${p.project_type}/${p.slug}`,
       platform: 'modrinth',
       platformLabel: '<img src="https://cdn.modrinth.com/modrinth-new.png" width="14" height="14" style="border-radius:3px;vertical-align:middle"> Modrinth',
-      icon: '<img src="https://cdn.modrinth.com/modrinth-new.png" width="56" height="56" style="border-radius:10px;object-fit:contain">',
-      banner: (p.featured_gallery) || (p.gallery && p.gallery.find(g => g.featured)?.url) || (p.gallery && p.gallery[0]?.url) || null,
+      icon: p.icon_url
+        ? `<img src="${p.icon_url}" style="width:72px;height:72px;object-fit:contain;border-radius:12px">`
+        : '<img src="https://cdn.modrinth.com/modrinth-new.png" width="56" height="56" style="border-radius:10px;object-fit:contain">',
+      banner: (p.gallery && p.gallery.find(g => g.featured)?.url) || null,
       name: p.title,
       desc: p.description,
       stats: currentLang === 'en'
